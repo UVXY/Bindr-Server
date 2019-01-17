@@ -6,29 +6,44 @@ mongoose.promise = Promise
 // Define userSchema
 const userSchema = new Schema({
 	local: {
-		username: { type: String, unique: false, required: false },
-		password: { type: String, unique: false, required: false }
+		username: { 
+			type: String, 
+			unique: false, 
+			required: false },
+		password: { 
+			type: String, 
+			unique: false, 
+			required: false }
 	},
-	firstName: { type: String, unique: false },
-	lastName: { type: String, unique: false },
+	firstName: { 
+		type: String, 
+		unique: false },
+	lastName: { 
+		type: String, 
+		unique: false },
 	google: {
-		googleId: { type: String, required: false }
+		googleId: { 
+			type: String, 
+			required: false }
 	},
-	photo: { type: String, required: false },
-	// local: {
-	// 	email: { type: String, unique: true },
-	// 	password: { type: String }
-	// },
-	// google: {
-	// 	id: { type: String },
-	// 	photos: []
-	// },
-	// firstName: { type: String },
-	// lastName: { type: String }
-	book: [{
-		type: Schema.Types.ObjectId,
-		ref: "Book"
-	  }]
+	photo: { 
+		type: String, 
+		required: false },
+	saved: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Book"
+    }
+  ],
+  ignored: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Book"
+    }
+  ],
+  image: {
+    type: String
+  }
 })
 
 // Define schema methods
