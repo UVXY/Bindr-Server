@@ -29,8 +29,7 @@ router.post("/comment", upload.none(), (req, res) => {
   })
   .catch(function(err) {
 		console.log(err)
-      // If an error occurred, send it to the client
-      res.json(err);
+    res.json(err);
   });
 });
 
@@ -40,6 +39,10 @@ router.post("/comment/audio", upload.single("audio-comment"), (req, res) => {
     (err, res) => {
       console.log(res, err)
     }
-  );
+  ).catch(function(err) {
+		console.log(err)
+    res.json(err);
+  });
 });
 
+module.exports = router;
