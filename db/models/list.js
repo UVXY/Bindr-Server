@@ -6,10 +6,12 @@ const listSchema = new Schema({
     type: String,
     required: true
   },
-  tags: {
-    type: Schema.Types.ObjectId,
-    ref: "Tag"
-  },
+  tags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Tag"
+    }
+  ],
   books: [
     {
       type: Schema.Types.ObjectId,
