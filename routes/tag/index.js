@@ -12,7 +12,7 @@ router.post("/tag", (req, res) => {
 
 router.put("/tag/:tag", (req, res) => {
   db.List.findOne({_id: req.body.listId}, (listRes) => {
-    return db.Tag.findOneAndUpdate({tagName: req.params.tag}, {$push: {lists: listRes}}, {new: true })
+    return db.Tag.findOneAndUpdate({tagName: req.params.tag}, {$push: {lists: listRes._id}}, {new: true })
   })
   .catch(function(err) {
 		console.log(err)
