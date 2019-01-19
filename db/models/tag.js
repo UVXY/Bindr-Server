@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const tagSchema = new Schema({
   tagName: {
     type: String,
+    unique: true,
     required: true
   },
   lists: [
