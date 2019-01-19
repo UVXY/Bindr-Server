@@ -14,7 +14,7 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../../tmp/audio_uploads')
+    cb(null, './tmp/audio_uploads')
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname)
@@ -23,7 +23,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-router.post("/comment/audio", upload.single("audio-comment"), (req, res) =>{
-
-  
+router.post("/comment", upload.none(), (req, res) => {
+  db.Comment.create(req.body).then((comment) => {
+		return db.Book.findOneAndUpdate({ _id: req.params.id }, { $push: {comments: comment._id }}, { new: true });
+  })
+  .catch(function(err) {
+		console.log(err)
+      // If an error occurred, send it to the client
+      res.json(err);
+  });
 });
+
+router.post("/comment/audio", upload.single("audio-comment"), (req, res) => {
+  cloudinary.v2.uploader.upload(
+    `./tmp/audio_uploads${req.file.filename}`, 
+    (err, res) => {
+      console.log(res, err)
+    }
+  );
+});
+
