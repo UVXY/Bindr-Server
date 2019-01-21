@@ -20,6 +20,10 @@ const bookSchema = new Schema({
     type: String, 
     required: true 
   },
+  infoLink: {
+    type: String,
+    required: true
+  },
   comments: [
     {
       type: Schema.Types.ObjectId,

@@ -13,14 +13,19 @@ const passport = require('../../passport')
 
 // this route is just used to get the user basic info
 router.get('/user', (req, res, next) => {
-	console.log('===== user!!======')
-	console.log(req.user)
-	if (req.user) {
-		return res.json({ user: req.user })
-	} else {
+	const { _id } = req.user;
+	console.log('===== user!!======');
+	console.log(req);
+	User.findOne({ '_id': _id }, (err, userMatch) => {
+		if (userMatch) {
+			console.log(userMatch);
+			return res.json(userMatch);
+		}
+	else {
 		return res.json({ user: null })
 	}
 })
+});
 
 router.get('/user/:id', (req, res, next) => {
 	console.log('===== user!!======')

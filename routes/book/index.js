@@ -23,7 +23,7 @@ router.post('/ignored/:uid', (req, res) => {
 })
 
 router.get("/book/:id", function(req, res) {
-		db.Book.findOneAndUpdatefindOne({ _id: req.params.id })
+		db.Book.findOneAndUpdate({ _id: req.params.id })
 		  // ..and populate all of the notes associated with it
 		  .populate("comments")
 		  .then(function(dbBook) {
@@ -35,5 +35,21 @@ router.get("/book/:id", function(req, res) {
 			res.json(err);
 		  });
 	  });
+
+// Get saved books
+router.get("/book/saved/:id", function(req, res) {
+	// Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+	db.User.findOne({ _id: req.params.id })
+		// ..and populate all of the books saved by that user
+		.populate("saved")
+		.then(function(dbUserBooks) {
+		// If we were able to successfully find an Article with the given id, send it back to the client
+		res.json(dbUserBooks);
+		})
+		.catch(function(err) {
+		// If an error occurred, send it to the client
+		res.json(err);
+		});
+	});
 
 module.exports = router;
