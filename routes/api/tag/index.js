@@ -2,15 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/models');
 
-router.post("/tag", (req, res) => {
-  db.Tag.create(red.body)
-  .then((dbRes) => {
-    console.log(dbRes)
-    res.json(dbRes)
-  })
-});
-
-router.put("/tag/:tag", (req, res) => {
+router.put("/:tag", (req, res) => {
   db.List.findOne({_id: req.body.listId}, (listRes) => {
     return db.Tag.findOneAndUpdate({tagName: req.params.tag}, {$push: {lists: listRes._id}}, {new: true })
   })
@@ -20,8 +12,8 @@ router.put("/tag/:tag", (req, res) => {
   });
 })
 
-router.get("/tag/:tag", (req, res) => {
-  db.Tag.find({tagName: req.params.tag})
+router.get("/:tag", (req, res) => {
+  db.Tag.findOne({tagName: req.params.tag})
   .populate("lists")
   .then((listRes) => {
     const fullList = [];
@@ -36,5 +28,13 @@ router.get("/tag/:tag", (req, res) => {
     res.json(fullList[rn]);
   })
 })
+
+router.post("/", (req, res) => {
+  db.Tag.create(red.body)
+  .then((dbRes) => {
+    console.log(dbRes)
+    res.json(dbRes)
+  })
+});
 
 module.exports = router;
