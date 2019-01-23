@@ -3,8 +3,6 @@ mongoose.connect(process.env.MONGODB_URI);
 const db = require("../models");
 const books = require("./lists.json");
 
-console.log(books.length);
-
 addToList = (book) => {
     const qry = { 
         title: book.list 
