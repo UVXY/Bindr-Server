@@ -6,11 +6,7 @@ const multer  = require('multer');
 const cloudinary = require('cloudinary');
 const db = require('../../db/models');
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-});
+cloudinary.config(process.env.CLOUDINARY_URL);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
