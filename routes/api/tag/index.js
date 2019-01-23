@@ -4,7 +4,11 @@ const db = require('../../db/models');
 
 router.put("/:tag", (req, res) => {
   db.List.findOne({_id: req.body.listId}, (listRes) => {
-    return db.Tag.findOneAndUpdate({tagName: req.params.tag}, {$push: {lists: listRes._id}}, {new: true })
+    return db.Tag.findOneAndUpdate(
+      {tagName: req.params.tag}, 
+      {$push: {lists: listRes._id}}, 
+      {new: true }
+    );
   })
   .catch(function(err) {
 		console.log(err)
@@ -15,9 +19,9 @@ router.put("/:tag", (req, res) => {
 router.get("/:tag", (req, res) => {
   db.Tag.findOne({tagName: req.params.tag})
   .populate("lists")
-  .then((listRes) => {
+  .then((tagRes) => {
     const fullList = [];
-    listRes.forEach(list => {
+    tagRes.lists.forEach(list => {
       list.populate("books");
       fullList.push(list.books)
     });
@@ -25,7 +29,8 @@ router.get("/:tag", (req, res) => {
   })
   .then((fullList) => {
     const rn = Math.floor(Math.random(fullList.length));
-    res.json(fullList[rn]);
+    const rnTwo = Math.floor(Math.random(fullList[rn].length));
+    res.json(fullList[rn][rnTwo]);
   })
 })
 

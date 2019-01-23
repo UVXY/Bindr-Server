@@ -12,10 +12,13 @@ router.get("/find/:uid", (req,res) => {
         const userInfo = {
             firstName: userRes.firstName,
             lastName: userRes.lastName,
-            image: userRes.image
+            photo: userRes.photo
         };
         res.json(userInfo);
     })
+    .catch(function (err) {
+        res.json(err);
+    });
 })
 
 router.get("/", (req,res) => {
@@ -30,10 +33,13 @@ router.get("/", (req,res) => {
             lastName: userRes.lastName,
             savedBooks: userRes.saved,
             ignoredBooks: userRes.ignored,
-            image: userRes.image
+            photo: userRes.photo
         };
         res.json(userInfo);
     })
+    .catch(function (err) {
+        res.json(err);
+    });
 })
 
 module.exports = router;

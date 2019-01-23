@@ -43,7 +43,7 @@ const userSchema = new Schema({
       ref: "Book"
     }
   ],
-  image: {
+  photo: {
 		type: String,
 		required: true
   }

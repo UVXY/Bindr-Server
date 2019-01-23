@@ -12,21 +12,30 @@ const passport = require("../../passport")
 // 	}))
 
 // this route is just used to get the user basic info
-router.get("/user", (req, res, next) => {
-	console.log("===== user!!======")
-	console.log(req.user)
-	if (req.user) {
-		return res.json({ user: req.user })
-	} else {
-		return res.json({ user: null })
-	}
-})
+router.get('/user', (req, res, next) => {
+	const { _id } = req.user;
+	User.findOne({ '_id': _id }, (err, userMatch) => {
+		if (userMatch) {
+			return res.json({
+					_id: userMatch._id,
+					username: userMatch.username,
+					firstName: userMatch.firstName,
+					lastName: userMatch.lastName,
+					photo: userMatch.photo,
+					saved: userMatch.saved
+			});
+		}
+		else {
+			return res.json({ user: null })
+		}
+	})
+});
 
-router.get("/user/:id", (req, res, next) => {
-	console.log("===== user!!======")
+router.get('/user/:id', (req, res, next) => {
+	console.log('===== user!!======')
 	const id = req.params.id;
 	User.findOne({
-		"_id": id
+		'_id': id
 	}, (err, userMatch) => {
 		if (userMatch) {
 			res.json(userMatch)
@@ -37,15 +46,15 @@ router.get("/user/:id", (req, res, next) => {
 })
 
 router.post(
-	"/login",
+	'/login',
 	function(req, res, next) {
 		console.log(req.body)
-		console.log("================")
+		console.log('================')
 		next()
 	},
-	passport.authenticate("local"),
+	passport.authenticate('local'),
 	(req, res) => {
-		console.log("POST to /login")
+		console.log('POST to /login')
 		const user = JSON.parse(JSON.stringify(req.user)) // hack
 		const cleanUser = Object.assign({}, user)
 		if (cleanUser.local) {
@@ -57,32 +66,32 @@ router.post(
 	}
 )
 
-router.post("/logout", (req, res) => {
+router.post('/logout', (req, res) => {
 	if (req.user) {
 		req.session.destroy()
-		res.clearCookie("connect.sid") // clean up!
-		return res.json({ msg: "logging you out" })
+		res.clearCookie('connect.sid') // clean up!
+		return res.json({ msg: 'logging you out' })
 	} else {
-		return res.json({ msg: "no user to log out!" })
+		return res.json({ msg: 'no user to log out!' })
 	}
 })
 
-router.post("/signup", (req, res) => {
-	const { username, password, firstName, lastName, image } = req.body
+router.post('/signup', (req, res) => {
+	const { username, password, firstName, lastName, photo } = req.body
 	console.log("REQ.BODY: ", req.body)
 	// ADD VALIDATION
-	User.findOne({ "local.username": username }, (err, userMatch) => {
+	User.findOne({ 'local.username': username }, (err, userMatch) => {
 		if (userMatch) {
 			return res.json({
 				error: `Sorry, already a user with the username: ${username}`
 			})
 		}
 		const newUser = new User({
-			"local.username": username,
-			"local.password": password,
+			'local.username': username,
+			'local.password': password,
 			firstName,
 			lastName,
-			image
+			photo
 		})
 		newUser.save((err, savedUser) => {
 			if (err) return res.json(err)
