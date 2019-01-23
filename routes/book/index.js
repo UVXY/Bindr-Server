@@ -1,39 +1,29 @@
-const express = require('express')
-const router = express.Router()
-const db = require('../../db/models')
+const express = require('express');
 
-router.post('/saved/:uid', (req, res) => {
-	db.Book.findOne({ _id: req.body.bookID}).then((book) => {
-		return db.User.findOneAndUpdate({ _id: req.param.uid}, { $push: {saved: book._id}}, { new: true });
-	})
-	.catch(function(err) {
-		console.log(err)
-    res.json(err);
+const router = express.Router();
+const db = require('../../db/models');
+
+// Get recommendations
+router.get('/book/recommendations', function (req, res) {
+  db.Book.find({}, function (err, docs) {
+    if (!err) {
+      res.json(docs);
+    } else { throw err; }
   });
-})
+});
 
-router.post('/ignored/:uid', (req, res) => {
-	db.Book.findOne({ _id: req.body.bookID}).then((book) => {
-		return db.User.findOneAndUpdate({ _id: req.param.uid}, { $push: {ignored: book._id}}, { new: true });
-	})
-	.catch(function(err) {
-		console.log(err)
-    res.json(err);
-  });
-})
-
-router.get("/book/:id", function(req, res) {
-		db.Book.findOneAndUpdatefindOne({ _id: req.params.id })
-		  // ..and populate all of the notes associated with it
-		  .populate("comments")
-		  .then(function(dbBook) {
-			// If we were able to successfully find an Article with the given id, send it back to the client
-			res.json(dbBook);
-		  })
-		  .catch(function(err) {
-			// If an error occurred, send it to the client
-			res.json(err);
-		  });
-	  });
+router.get('/book/:id', function (req, res) {
+  db.Book.findOneAndUpdate({ _id: req.params.id })
+  // ..and populate all of the notes associated with it
+    .populate('comments')
+    .then(function (dbBook) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      res.json(dbBook);
+    })
+    .catch(function (err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
 
 module.exports = router;
