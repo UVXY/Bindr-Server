@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/bindr"); 
+mongoose.connect(process.env.MONGODB_URI); 
 const db = require("../models");
 const books = require("./lists.json");
 

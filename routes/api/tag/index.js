@@ -11,7 +11,6 @@ router.put("/:tag", (req, res) => {
     );
   })
   .catch(function(err) {
-		console.log(err)
     res.json(err);
   });
 })
