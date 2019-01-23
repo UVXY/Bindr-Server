@@ -5,10 +5,9 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-		"start:prod": "npm run seed && node.js server.js",
+		"start:prod": "node.js server.js",
 		"start:dev": "nodemon server.js",
-		"prod": "export NODE_ENV=\"production\" && nodemon server.js",
-		"seed": "node db/seed/seed.js"
+		"prod": "export NODE_ENV=\"production\" && nodemon server.js"
 	},
 	"author": "",
 	"license": "ISC",
