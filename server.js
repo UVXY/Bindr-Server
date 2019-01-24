@@ -61,10 +61,7 @@ app.get(
 )
 
 /* Express app ROUTING */
-app.use('/auth', require('./routes/auth'))
-app.use('/api', require('./routes/book'))
-app.use('/api', require('./routes/user'))
-
+app.use(require('./routes'));
 
 // ====== Error handler ====
 app.use(function(err, req, res, next) {
