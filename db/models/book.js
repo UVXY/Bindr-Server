@@ -7,18 +7,23 @@ const bookSchema = new Schema({
     required: true 
   },
   subtitle: { 
-    type: String },
+    type: String 
+  },
   authors: { 
-    type: [String], 
-    required: true 
+    type: [String]
+  },
+  genre: { 
+    type: [String]
   },
   summary: { 
-    type: String, 
-    required: true 
+    type: String
   },
   image: { 
-    type: String, 
-    required: true 
+    type: String
+  },
+  infoLink: {
+    type: String,
+    required: true
   },
   comments: [
     {
