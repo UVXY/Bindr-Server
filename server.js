@@ -7,8 +7,10 @@ const morgan = require('morgan')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const dbConnection = require('./db') // loads our connection to the mongo database
+const routes = require("./routes");
 const passport = require('./passport')
 const app = express()
+
 const PORT = process.env.PORT || 3001
 
 // ===== Middleware ====
@@ -61,10 +63,8 @@ app.get(
 )
 
 /* Express app ROUTING */
-app.use('/auth', require('./routes/auth'))
-app.use('/api', require('./routes/book'))
-app.use('/api', require('./routes/user'))
 
+app.use(routes);
 
 // ====== Error handler ====
 app.use(function(err, req, res, next) {

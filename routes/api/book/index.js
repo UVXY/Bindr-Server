@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../../db/models')
+const db = require("../../../db/models");
 
 router.get('/recommendations', function (req, res) {
   db.Book.find({}, function (err, docs) {
@@ -8,6 +8,13 @@ router.get('/recommendations', function (req, res) {
       res.json(docs);
     } else { throw err; }
   });
+});
+
+router.get('/book', function (req, res) {
+	db.Book.findOne({title: req.body.bookTitle})
+	.then((dbRes) => {
+		res.json(dbRes);
+	});
 });
 
 router.post('/save', (req, res) => {
