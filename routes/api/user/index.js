@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/models');
+const db = require("../../../db/models");
 
 router.get("/find/:uid", (req,res) => {
     db.User.findOne({_id: req.params.uid})

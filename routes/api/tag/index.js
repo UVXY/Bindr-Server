@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/models');
+const db = require("../../../db/models");
 
 router.put("/:tag", (req, res) => {
   db.List.findOne({_id: req.body.listId}, (listRes) => {

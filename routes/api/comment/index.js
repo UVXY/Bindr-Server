@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const multer  = require('multer');
 const cloudinary = require('cloudinary');
-const db = require('../../db/models');
+const db = require("../../../db/models");
 
 cloudinary.config(process.env.CLOUDINARY_URL);
 
