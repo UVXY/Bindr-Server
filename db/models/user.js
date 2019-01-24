@@ -9,26 +9,28 @@ const userSchema = new Schema({
 		username: { 
 			type: String, 
 			unique: false, 
-			required: false },
+			required: false 
+		},
 		password: { 
 			type: String, 
 			unique: false, 
-			required: false }
+			required: false 
+		}
 	},
 	firstName: { 
 		type: String, 
-		unique: false },
+		unique: false 
+	},
 	lastName: { 
 		type: String, 
-		unique: false },
+		unique: false 
+	},
 	google: {
 		googleId: { 
 			type: String, 
-			required: false }
+			required: false 
+		}
 	},
-	photo: { 
-		type: String, 
-		required: false },
 	saved: [
     {
       type: Schema.Types.ObjectId,
@@ -41,8 +43,9 @@ const userSchema = new Schema({
       ref: "Book"
     }
   ],
-  image: {
-    type: String
+  photo: {
+		type: String,
+		required: true
   }
 })
 
