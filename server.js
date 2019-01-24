@@ -63,9 +63,8 @@ app.get(
 )
 
 /* Express app ROUTING */
+
 app.use(routes);
-
-
 
 // ====== Error handler ====
 app.use(function(err, req, res, next) {
