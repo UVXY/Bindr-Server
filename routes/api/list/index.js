@@ -12,6 +12,13 @@ router.put("/:list", (req, res) => {
   })
 });
 
+router.get("/:title", (req, res) => {
+   db.List.findOne({title: req.params.title})
+  .then((dbRes) => {
+      res.json(dbRes);
+  });
+});
+
 router.post("/", (req, res) => {
   db.List.create(req.body)
   .then((dbRes) => {
