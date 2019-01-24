@@ -15,8 +15,17 @@ const bookSchema = new Schema({
   genre: { 
     type: [String]
   },
-  summary: { 
+  isbn: {
     type: String
+  },
+  pages: {
+    type: String
+  },
+  language: {
+    type: String
+  },
+  summary: { 
+    type: [String]
   },
   image: { 
     type: String

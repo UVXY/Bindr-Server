@@ -1,0 +1,18 @@
+[
+    {"title":"Backpacking", "tags":["travel", "wandering", "lost"]},
+    {"title":"Best Books Ever", "tags":["best", "earliest-list", "favourites", "fiction", "writer"]},
+    {"title":"Make me Cry", "tags":["sad", "crying", "death"]},
+    {"title":"DevOps", "tags":["learning", "technology", "help"]},
+    {"title":"Feels like Fall", "tags":["autumn", "fall", "fiction", "seasons", "setting", "weather"]},
+    {"title":"Funniest Novels", "tags":["comedy", "fiction", "funny", "humor", "humour", "satire"]},
+    {"title":"history", "tags":["fiction", "historical", "old", "ancient"]},
+    {"title":"Rainy Day", "tags":["rainy", "storm", "cloudy", "fall"]},
+    {"title":"Reese Book Club", "tags":["book club", "celebrity", "movies", "blond"]},
+    {"title":"sci-fi", "tags":["fantasy", "earliest-list", "fantasy", "sci-fi", "science-fiction", "sf", "classics"]},
+    {"title":"Self Help", "tags":["business", "career", "creativity", "fitness", "happiness", "health", "love", "non-fiction", "nonfiction", "productivity", "relationships", "romance", "self-help", "success", "wellness"]},
+    {"title":"sports", "tags":["baseball", "best", "sports"]},
+    {"title":"summer", "tags":["book club", "fiction", "historical", "literary", "summer", "sunny", "clear", "warm"]},
+    {"title":"Sweater Weather", "tags":["autumn", "books", "coffe", "cold", "creep", "creepy", "dark", "fall", "fireplace", "freaky", "halloween", "leaves", "november", "october", "pumpkin", "rain", "rainy", "reading", "scary", "september", "spooky", "sweater", "tea", "thanksgiving", "weather"]},
+    {"title":"Thriller", "tags":["intrigue", "mystery", "thriller"]},
+    {"title":"Dead of Winter", "tags":["fiction", "seasons", "setting", "weather", "winter", "cold", "warmup"]}
+]
