@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/models');
+const db = require("../../../db/models");
 
 router.put("/:list", (req, res) => {
   db.Tag.findOne({tagName: req.body.tag})
@@ -10,6 +10,13 @@ router.put("/:list", (req, res) => {
       {$push: { tags: tagRes._id}}, 
       {new: true});
   })
+});
+
+router.get("/:title", (req, res) => {
+   db.List.findOne({title: req.params.title})
+  .then((dbRes) => {
+      res.json(dbRes);
+  });
 });
 
 router.post("/", (req, res) => {
