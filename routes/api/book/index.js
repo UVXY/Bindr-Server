@@ -10,6 +10,13 @@ router.get('/recommendations', function (req, res) {
   });
 });
 
+router.get('/:book', function (req, res) {
+	db.Book.findOne({title: req.params.book})
+	.then((dbRes) => {
+		res.json(dbRes);
+	});
+});
+
 router.post('/save', (req, res) => {
 	db.Book.findOne({ _id: req.body.bookID}).then((book) => {
 		return db.User.findOneAndUpdate(
