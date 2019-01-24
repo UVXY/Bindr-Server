@@ -10,8 +10,8 @@ router.get('/recommendations', function (req, res) {
   });
 });
 
-router.get('/:book', function (req, res) {
-	db.Book.findOne({title: req.params.book})
+router.get('/book', function (req, res) {
+	db.Book.findOne({title: req.body.bookTitle})
 	.then((dbRes) => {
 		res.json(dbRes);
 	});
