@@ -29,7 +29,7 @@ router.get("/:tag", (req, res) => {
   .then((fullList) => {
     const rn = Math.floor(Math.random(fullList.length));
     const rnTwo = Math.floor(Math.random(fullList[rn].length));
-    res.json(fullList[rn][rnTwo]);
+    res.json(fullList);
   })
 })
 
