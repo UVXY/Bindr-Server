@@ -22,13 +22,13 @@ router.get("/:tag", (req, res) => {
     const fullList = tagRes.lists.map(list => {
       fullList.push(list);
     });
-    fullList.forEach(list => {
-      list.books.forEach(book => {
-        db.Book.findOne({_id: book}).then( dbRes => {
-          book = dbRes;
-        });
-      });
-    });
+    // fullList.forEach(list => {
+    //   list.books.forEach(book => {
+    //     db.Book.findOne({_id: book}).then( dbRes => {
+    //       book = dbRes;
+    //     });
+    //   });
+    // });
     res.json(fullList);
   });
 })
