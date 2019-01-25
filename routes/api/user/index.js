@@ -4,10 +4,6 @@ const db = require("../../../db/models");
 
 router.get("/find/:uid", (req,res) => {
     db.User.findOne({_id: req.params.uid})
-    .populate([
-        {path: 'saved'}, 
-        {path: 'ignored'}
-    ])
     .then((userRes) => {
         const userInfo = {
             firstName: userRes.firstName,
@@ -29,14 +25,7 @@ router.get("/", (req,res) => {
         {path: 'ignored'}
     ])
     .then((userRes) => {
-        const userInfo = {
-            firstName: userRes.firstName,
-            lastName: userRes.lastName,
-            savedBooks: userRes.saved,
-            ignoredBooks: userRes.ignored,
-            photo: userRes.photo
-        };
-        res.json(userInfo);
+        res.json(userRes);
     })
     .catch(function (err) {
         res.json(err);
