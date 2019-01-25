@@ -17,23 +17,22 @@ router.put("/:tag", (req, res) => {
 
 router.get("/:tag", (req, res) => {
   db.Tag.findOne({tagName: req.params.tag})
-  .populate("lists")
   .then((tagRes) => {
-    const fullList = [];
-    tagRes.lists.map(list => {
-      fullList.push(list);
-    });
-    const finalResults = [];
-    fullList.forEach(list => {
-      const listRes = []; 
-      list.books.forEach(book => {
-        db.Book.findOne({_id: book}).then(dbRes => {
-          listRes.push(dbRes);
+    const listsArray = [];
+    tagRes.lists.forEach(list => {
+      const bookList = [];
+      db.List.findOne({_id: list})
+      .populate("books")
+      .then(dbListRes => {
+        dbListRes.books.forEach(book => {
+          bookList.push(book);
         });
+        listsArray.push(bookList);
       });
-      finalResults.push(listRes);
     });
-    res.json(finalResults);
+    return listsArray;
+  }).then(finalResult => {
+    res.json(finalResult);
   });
 })
 
