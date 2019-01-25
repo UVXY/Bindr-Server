@@ -19,18 +19,18 @@ router.get("/:tag", (req, res) => {
   db.Tag.findOne({tagName: req.params.tag})
   .populate("lists")
   .then((tagRes) => {
-    const fullList = [];
-    tagRes.lists.forEach(list => {
-      list.populate("books");
-      fullList.push(list.books)
+    const fullList = tagRes.lists.map(list => {
+      fullList.push(list);
     });
-    return fullList;
-  })
-  .then((fullList) => {
-    const rn = Math.floor(Math.random(fullList.length));
-    const rnTwo = Math.floor(Math.random(fullList[rn].length));
+    fullList.forEach(list => {
+      list.books.forEach(book => {
+        db.Book.findOne({_id: book}).then( dbRes => {
+          book = dbRes;
+        });
+      });
+    });
     res.json(fullList);
-  })
+  });
 })
 
 router.post("/", (req, res) => {
