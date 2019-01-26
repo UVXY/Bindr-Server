@@ -77,7 +77,7 @@ router.post('/signup', upload.single("photo"), (req, res) => {
 	// ADD VALIDATION
 	cloudinary.v2.uploader.upload(
     `./tmp/image_uploads${req.file.filename}`, 
-    {resource_type: "video"},
+    {resource_type: "image"},
     (error, cloudRes) => {
 			const photo = cloudRes.url;
 			if (error) {
