@@ -1,7 +1,22 @@
-const express = require("express")
-const router = express.Router()
-const User = require("../../db/models/user")
-const passport = require("../../passport")
+const express = require("express");
+const router = express.Router();
+const multer  = require('multer');
+const cloudinary = require('cloudinary');
+const User = require("../../db/models/user");
+const passport = require("../../passport");
+
+cloudinary.config(process.env.CLOUDINARY_URL);
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './tmp/image_uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 // router.get("/google", passport.authenticate("google", { scope: ["profile"] }))
 
@@ -56,10 +71,38 @@ router.post('/logout', (req, res) => {
 	}
 })
 
-router.post('/signup', (req, res) => {
-	const { username, password, firstName, lastName, photo } = req.body
+router.post('/signup', upload.single("photo"), (req, res) => {
+	const { username, password, firstName, lastName} = req.body
 	console.log("REQ.BODY: ", req.body)
 	// ADD VALIDATION
+	cloudinary.v2.uploader.upload(
+    `./tmp/image_uploads${req.file.filename}`, 
+    {resource_type: "image"},
+    (error, cloudRes) => {
+			const photo = cloudRes.url;
+			if (error) {
+        res.json(error);
+      } else {
+				User.findOne({ 'local.username': username }, (err, userMatch) => {
+					if (userMatch) {
+						return res.json({
+							error: `Sorry, already a user with the username: ${username}`
+						})
+					}
+					const newUser = new User({
+						'local.username': username,
+						'local.password': password,
+						firstName,
+						lastName,
+						photo
+					})
+					newUser.save((err, savedUser) => {
+						if (err) return res.json(err)
+						return res.json(savedUser)
+					})
+				})
+			}
+    });
 	User.findOne({ 'local.username': username }, (err, userMatch) => {
 		if (userMatch) {
 			return res.json({

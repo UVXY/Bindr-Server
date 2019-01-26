@@ -17,21 +17,33 @@ router.put("/:tag", (req, res) => {
 
 router.get("/:tag", (req, res) => {
   db.Tag.findOne({tagName: req.params.tag})
-  .populate("lists")
   .then((tagRes) => {
-    const fullList = [];
-    tagRes.lists.forEach(list => {
-      list.populate("books");
-      fullList.push(list.books)
+    db.List.find({_id: {$in: tagRes.lists}})
+    .populate("books")
+    .then(dbListRes => {
+      const bookLists = [];
+      dbListRes.forEach(filledList => {
+        bookLists.push(filledList.books);
+      });
+      return bookLists;
+    })
+    .then(bookLists => {
+      const finalRes = [];
+      bookLists.forEach(list => {
+        const tempBkList = []
+        while (tempBkList.length < 11) {
+          const rn = Math.floor(Math.random() * Math.floor(list.length));
+          const test = Math.floor(Math.random() * Math.floor(list.length));
+          if (rn <= test) {
+            tempBkList.push(list[rn]);
+          }
+        }
+        finalRes.push(tempBkList);
+      });
+      res.json(finalRes);
     });
-    return fullList;
-  })
-  .then((fullList) => {
-    const rn = Math.floor(Math.random(fullList.length));
-    const rnTwo = Math.floor(Math.random(fullList[rn].length));
-    res.json(fullList[rn][rnTwo]);
-  })
-})
+  });
+});
 
 router.post("/", (req, res) => {
   db.Tag.create(red.body)

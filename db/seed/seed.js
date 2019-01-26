@@ -5,8 +5,8 @@ mongoose.connect(process.env.MONGODB_URI);
 const db = require("../models");
 const seed = require("./lists.js");
 
+
 createBooks = (books) => {
-    console.log(books.length);
     for (let i = 0; i < books.length; i++) {
         const newBook = {
             title: books[i].title,
@@ -16,36 +16,25 @@ createBooks = (books) => {
             pages: books[i].num_pages,
             language: books[i].language,
             summary: books[i].description,
-            image: books[i].image
+            image: books[i].image,
+            infoLink: books[i].url
         };
     
         db.Book.create(newBook);
     };
 }
+createTags = (tags) => {
+    for (let i = 0; i < tags.length; i++) {
+        db.Tag.create({tagName: tags[i]});
+    }
+};
 
-addTags = (list, tag) => {
+addTagsToList = (list, tag) => {
     const qry = { 
         tagName: tag
     };
 
-    const opts = { 
-        upsert: true, 
-        new: true, 
-        setDefaultsOnInsert: true 
-    };
-
-    db.Tag.findOneAndUpdate(qry, {$push: {lists: list._id }}, opts, (err, result) =>{
-        if (!err) {
-            if (!result) {
-                result = new Tag({
-                    tagName: tag
-                });
-            }
-            result.save(err => {
-                !err ? result.lists = [list._id] : err;
-            });
-        }
-    }).then(tagRes => {
+    db.Tag.findOneAndUpdate(qry, {$push: {lists: list._id }}, {new: true}).then(tagRes => {
         db.List.findOneAndUpdate(
             {_id: list._id}, 
             {$push: {tags: tagRes._id }},
@@ -65,7 +54,7 @@ addLists = (list) => {
 
     db.List.create(newList).then(listRes => {
         for (let i = 0; i <list.tags.length; i++) {
-            addTags(listRes, list.tags[i]);
+            addTagsToList(listRes, list.tags[i]);
 
         }
     });
@@ -87,6 +76,8 @@ addToList = (book) => {
         .then(() => {})
     });
 }
+
+// createTags(seed.tags);
 
 // createBooks(seed.books);
 
