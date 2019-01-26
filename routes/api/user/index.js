@@ -25,7 +25,13 @@ router.get("/", (req,res) => {
         {path: 'ignored'}
     ])
     .then((userRes) => {
-        res.json(userRes);
+        const userInfo = {
+            firstName: userRes.firstName,	
+            lastName: userRes.lastName,	
+            savedBooks: userRes.saved,	
+            ignoredBooks: userRes.ignored	
+        };	
+        res.json(userInfo);
     })
     .catch(function (err) {
         res.json(err);
