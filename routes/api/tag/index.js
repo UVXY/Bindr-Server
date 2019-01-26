@@ -18,23 +18,32 @@ router.put("/:tag", (req, res) => {
 router.get("/:tag", (req, res) => {
   db.Tag.findOne({tagName: req.params.tag})
   .then((tagRes) => {
-    const listsArray = [];
-    tagRes.lists.forEach(list => {
-      const bookList = [];
-      db.List.findOne({_id: list})
-      .populate("books")
-      .then(dbListRes => {
-        dbListRes.books.forEach(book => {
-          bookList.push(book);
-        });
-        listsArray.push(bookList);
+    db.List.find({_id: {$in: tagRes.lists}})
+    .populate("books")
+    .then(dbListRes => {
+      const bookLists = [];
+      dbListRes.forEach(filledList => {
+        bookLists.push(filledList.books);
       });
+      return bookLists;
+    })
+    .then(bookLists => {
+      const finalRes = [];
+      bookLists.forEach(list => {
+        const tempBkList = []
+        while (tempBkList.length < 11) {
+          const rn = Math.floor(Math.random() * Math.floor(list.length));
+          const test = Math.floor(Math.random() * Math.floor(list.length));
+          if (rn <= test) {
+            tempBkList.push(list[rn]);
+          }
+        }
+        finalRes.push(tempBkList);
+      });
+      res.json(finalRes);
     });
-    return listsArray;
-  }).then(finalResult => {
-    res.json(finalResult);
   });
-})
+});
 
 router.post("/", (req, res) => {
   db.Tag.create(red.body)
