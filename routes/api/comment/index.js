@@ -48,15 +48,16 @@ router.post("/audio", upload.single("audio-comment"), (req, res) => {
 });
 
 router.post("/test", upload.single("image"), (req, res) => {
-  cloudinary.v2.uploader.upload(
-    `./tmp/audio_uploads${req.file.filename}`, 
-    {resource_type: "image"},
-    (err, cloudRes) => {
-      res.json(cloudRes);
-    }
-  ).catch(function(err) {
-		console.log(err);
-  });
+  console.log(req);
+  // cloudinary.v2.uploader.upload(
+  //   `./tmp/audio_uploads${req.file.filename}`, 
+  //   {resource_type: "image"},
+  //   (err, cloudRes) => {
+  //     res.json(cloudRes);
+  //   }
+  // ).catch(function(err) {
+	// 	console.log(err);
+  // });
 })
 
 router.post("/", upload.none(), (req, res) => {
