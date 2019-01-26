@@ -29,7 +29,8 @@ router.get("/", (req,res) => {
             firstName: userRes.firstName,	
             lastName: userRes.lastName,	
             savedBooks: userRes.saved,	
-            ignoredBooks: userRes.ignored	
+            ignoredBooks: userRes.ignored,
+            photo: userRes.photo	
         };	
         res.json(userInfo);
     })
