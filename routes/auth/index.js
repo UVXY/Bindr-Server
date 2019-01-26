@@ -73,6 +73,8 @@ router.post('/logout', (req, res) => {
 router.post('/signup', upload.single("photo"), (req, res) => {
 	const { username, password, firstName, lastName} = req.body
 	console.log("REQ.BODY: ", req.body)
+	console.log("REQ.FILE: ", req.file)
+	console.log("REQ.FILES: ", req.files)
 	// ADD VALIDATION
 	cloudinary.v2.uploader.upload(
     `./tmp/image_uploads${req.file.filename}`, 
