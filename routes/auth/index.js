@@ -43,13 +43,11 @@ router.get('/user/:id', (req, res, next) => {
 router.post(
 	'/login',
 	function(req, res, next) {
-		console.log(req.body)
 		console.log('================')
 		next()
 	},
 	passport.authenticate('local'),
 	(req, res) => {
-		console.log(req);
 		console.log('POST to /login')
 		const user = JSON.parse(JSON.stringify(req.user)) // hack
 		const cleanUser = Object.assign({}, user)
