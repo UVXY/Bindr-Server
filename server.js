@@ -4,6 +4,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const multer = require("multer")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const dbConnection = require('./db') // loads our connection to the mongo database
@@ -63,6 +64,7 @@ app.get(
 )
 
 /* Express app ROUTING */
+app.use(multer().any());
 app.use(routes);
 
 // ====== Error handler ====
