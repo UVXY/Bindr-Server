@@ -28,17 +28,17 @@ router.get("/:tag", (req, res) => {
       return bookLists;
     })
     .then(bookLists => {
-      const finalRes = [];
+      let finalRes = [];
       bookLists.forEach(list => {
         const tempBkList = []
-        while (tempBkList.length < 11) {
+        while (tempBkList.length < 30/bookLists.length) {
           const rn = Math.floor(Math.random() * Math.floor(list.length));
           const test = Math.floor(Math.random() * Math.floor(list.length));
           if (rn <= test) {
             tempBkList.push(list[rn]);
           }
         }
-        finalRes.push(tempBkList);
+        finalRes = finalRes.concat(tempBkList);
       });
       res.json(finalRes);
     });
