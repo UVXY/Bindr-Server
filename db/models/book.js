@@ -37,7 +37,7 @@ const bookSchema = new Schema({
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Comments"
+      ref: "Comment"
     }
   ],
   lists: [

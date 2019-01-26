@@ -48,12 +48,20 @@ router.post("/audio", upload.single("audio-comment"), (req, res) => {
 });
 
 router.post("/", upload.none(), (req, res) => {
-  db.Comment.create(req.body).then((comment) => {
-		return db.Book.findOneAndUpdate(
-      { _id: req.body.id }, 
+  const {author, content, audio, id} = req.body;
+  db.Comment.create({
+    author: author,
+    content: content,
+    audio: audio
+  }).then((comment) => {
+		db.Book.findOneAndUpdate(
+      { _id: id }, 
       { $push: {comments: comment._id }}, 
       { new: true }
-    );
+    ).then(dbRes => {
+      console.log(dbRes);
+      res.status(200).send("Done!");
+    });
   })
   .catch(function(err) {
 		console.log(err)

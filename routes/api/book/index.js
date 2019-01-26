@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const db = require('../../../db/models')
+const express = require('express');
+const router = express.Router();
+const db = require('../../../db/models');
 
 router.get('/recommendations', function (req, res) {
   db.Book.find({}, function (err, docs) {
@@ -23,7 +23,8 @@ router.post('/ignore', (req, res) => {
 })
 
 router.get("/", function(req, res) {
-	db.Book.findOneAndUpdatefindOne({ _id: req.body.id })
+	const id = req.body.id;
+	db.Book.find({ _id: id })
 	.populate("comments")
 	.then(function(dbBook) {
 		res.json(dbBook);
