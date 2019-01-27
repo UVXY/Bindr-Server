@@ -71,40 +71,41 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-	const { username, password, firstName, lastName} = req.body
-	const {path, originalname} = req.file
-	// ADD VALIDATION
-	cloudinary.v2.uploader.upload(
-    path, 
-		{
-			public_id: originalname,
-			resource_type: "image"
-		},
-    (error, cloudRes) => {
-			const photo = cloudRes.url;
-			if (error) {
-        res.json(error);
-      } else {
-				User.findOne({ 'local.username': username }, (err, userMatch) => {
-				if (userMatch) {
-					return res.json({
-						error: `Sorry, already a user with the username: ${username}`
-					})
-				}
-				const newUser = new User({
-					'local.username': username,
-					'local.password': password,
-					firstName,
-					lastName,
-					photo
-				})
-				newUser.save((err, savedUser) => {
-					if (err) return res.json(err)
-					return res.json(savedUser)
-				})
-			})
-		}
-  });
+	console.log(req);
+// 	const { username, password, firstName, lastName} = req.body
+// 	const {path, originalname} = req.file
+// 	// ADD VALIDATION
+// 	cloudinary.v2.uploader.upload(
+//     path, 
+// 		{
+// 			public_id: originalname,
+// 			resource_type: "image"
+// 		},
+//     (error, cloudRes) => {
+// 			const photo = cloudRes.url;
+// 			if (error) {
+//         res.json(error);
+//       } else {
+// 				User.findOne({ 'local.username': username }, (err, userMatch) => {
+// 				if (userMatch) {
+// 					return res.json({
+// 						error: `Sorry, already a user with the username: ${username}`
+// 					})
+// 				}
+// 				const newUser = new User({
+// 					'local.username': username,
+// 					'local.password': password,
+// 					firstName,
+// 					lastName,
+// 					photo
+// 				})
+// 				newUser.save((err, savedUser) => {
+// 					if (err) return res.json(err)
+// 					return res.json(savedUser)
+// 				})
+// 			})
+// 		}
+//   });
 })
 
 module.exports = router
