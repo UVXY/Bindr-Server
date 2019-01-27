@@ -64,12 +64,14 @@ app.get(
 )
 
 /* Express app ROUTING */
-app.use(multer().any());
+app.use(multer({ dest: "/tmp/img_uploads"}).single("image"));
+app.use(multer({ dest: "/tmp/audio_uploads"}).single("audio-comment"));
 app.use(routes);
 
 // ====== Error handler ====
 app.use(function(err, req, res, next) {
 	console.log('====== ERROR =======')
+	console.log(err);
 	console.error(err.stack)
 	res.status(500)
 })

@@ -8,34 +8,28 @@ const db = require('../../../db/models');
 
 cloudinary.config(process.env.CLOUDINARY_URL);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './tmp/audio_uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname)
-  }
-})
-
-const upload = multer({ storage: storage })
-
-router.post("/audio", upload.single("audio-comment"), (req, res) => {
+router.post("/audio", (req, res) => {
+  const {author, content, audio, id} = req.body;
+  const {path, originalname} = req.file
   cloudinary.v2.uploader.upload(
-    `./tmp/audio_uploads${req.file.filename}`, 
-    {resource_type: "video"},
+    path, 
+    {
+      public_id: originalname,
+      resource_type: "video"
+    },
     (err, cloudRes) => {
       if (err) {
         res.json(err);
       } else {
         const audioComment = {
-          author: req.body.author,
-          content: req.body.text,
-          audio: true,
+          author: author,
+          content: content,
+          audio: audio,
           contentLink: cloudRes.url
         };
         db.Comment.create(audioComment).then(commentRes => {
           return db.Book.findOneAndUpdate(
-            { _id: req.body.id }, 
+            { _id: id }, 
             { $push: {comments: commentRes._id }}, 
             { new: true }
           );
@@ -43,24 +37,10 @@ router.post("/audio", upload.single("audio-comment"), (req, res) => {
       }
     }
   ).catch(function(err) {
-		console.log(err);
   });
 });
 
-router.post("/test", upload.single("image"), (req, res) => {
-  console.log(req);
-  // cloudinary.v2.uploader.upload(
-  //   `./tmp/audio_uploads${req.file.filename}`, 
-  //   {resource_type: "image"},
-  //   (err, cloudRes) => {
-  //     res.json(cloudRes);
-  //   }
-  // ).catch(function(err) {
-	// 	console.log(err);
-  // });
-})
-
-router.post("/", upload.none(), (req, res) => {
+router.post("/", (req, res) => {
   const {author, content, audio, id} = req.body;
   db.Comment.create({
     author: author,
@@ -77,7 +57,6 @@ router.post("/", upload.none(), (req, res) => {
     });
   })
   .catch(function(err) {
-		console.log(err)
     res.json(err);
   });
 });

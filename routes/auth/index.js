@@ -70,58 +70,41 @@ router.post('/logout', (req, res) => {
 	}
 })
 
-router.post('/signup', upload.single("photo"), (req, res) => {
+router.post('/signup', (req, res) => {
 	const { username, password, firstName, lastName} = req.body
-	console.log("REQ.BODY: ", req.body)
-	console.log("REQ.FILE: ", req.file)
-	console.log("REQ.FILES: ", req.files)
+	const {path, originalname} = req.file
 	// ADD VALIDATION
 	cloudinary.v2.uploader.upload(
-    `./tmp/image_uploads${req.file.filename}`, 
-    {resource_type: "image"},
+    path, 
+		{
+			public_id: originalname,
+			resource_type: "image"
+		},
     (error, cloudRes) => {
 			const photo = cloudRes.url;
 			if (error) {
         res.json(error);
       } else {
 				User.findOne({ 'local.username': username }, (err, userMatch) => {
-					if (userMatch) {
-						return res.json({
-							error: `Sorry, already a user with the username: ${username}`
-						})
-					}
-					const newUser = new User({
-						'local.username': username,
-						'local.password': password,
-						firstName,
-						lastName,
-						photo
+				if (userMatch) {
+					return res.json({
+						error: `Sorry, already a user with the username: ${username}`
 					})
-					newUser.save((err, savedUser) => {
-						if (err) return res.json(err)
-						return res.json(savedUser)
-					})
+				}
+				const newUser = new User({
+					'local.username': username,
+					'local.password': password,
+					firstName,
+					lastName,
+					photo
 				})
-			}
-    });
-	User.findOne({ 'local.username': username }, (err, userMatch) => {
-		if (userMatch) {
-			return res.json({
-				error: `Sorry, already a user with the username: ${username}`
+				newUser.save((err, savedUser) => {
+					if (err) return res.json(err)
+					return res.json(savedUser)
+				})
 			})
 		}
-		const newUser = new User({
-			'local.username': username,
-			'local.password': password,
-			firstName,
-			lastName,
-			photo
-		})
-		newUser.save((err, savedUser) => {
-			if (err) return res.json(err)
-			return res.json(savedUser)
-		})
-	})
+  });
 })
 
 module.exports = router
