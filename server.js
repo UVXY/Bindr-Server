@@ -64,7 +64,7 @@ app.get(
 )
 
 /* Express app ROUTING */
-app.use(multer({ dest: "/tmp/img_uploads"}).single("image"));
+app.use(multer({ dest: "/tmp/img_uploads"}).single("photo"));
 app.use(multer({ dest: "/tmp/audio_uploads"}).single("audio-comment"));
 app.use(routes);
 
