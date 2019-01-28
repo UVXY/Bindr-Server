@@ -23,9 +23,9 @@ router.post("/audio", (req, res) => {
           public_id: originalname,
           resource_type: "video"
         },
-        (err, cloudRes) => {
-          if (err) {
-            res.json(err);
+        (cloudErr, cloudRes) => {
+          if (cloudErr) {
+            res.json(cloudErr);
           } else {
             const audioComment = {
               author: author,
@@ -43,6 +43,7 @@ router.post("/audio", (req, res) => {
           }
         })
         .catch(function(err) {
+          res.json(err);
       });
     }
   });

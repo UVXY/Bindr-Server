@@ -74,11 +74,11 @@ router.post('/signup', (req, res) => {
 					public_id: originalname,
 					resource_type: "image"
 				},
-				(error, cloudRes) => {
+				(cloudErr, cloudRes) => {
 					console.log(req.body);
 					const photo = cloudRes.url;
-					if (error) {
-					res.json(error);
+				if (cloudErr) {
+					res.json(cloudErr);
 				} else {
 					User.findOne({ 'local.username': username }, (err, userMatch) => {
 					if (userMatch) {
