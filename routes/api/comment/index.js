@@ -16,11 +16,12 @@ router.post("/audio", (req, res) => {
 			res.json(upErr);
 		} else {
       const {author, content, audio, id} = req.body;
-      const {path, originalname} = req.file
+      const {path} = req.file
       cloudinary.v2.uploader.upload(
         path, 
         {
-          public_id: originalname,
+          use_filename: true,
+          unique_filename: false,
           resource_type: "video"
         },
         (cloudErr, cloudRes) => {

@@ -67,11 +67,12 @@ router.post('/signup', (req, res) => {
 		if (upErr){
 			res.json(upErr);
 		} else {
-			const { username, password, firstName, lastName} = req.body
-			const {path, originalname} = req.file
+			const { username, password, firstName, lastName} = req.body;
+			const {path} = req.file;
+			const fileName = req.file.originalname.split(".")[0];
 			cloudinary.v2.uploader.upload(path, 
 				{
-					public_id: originalname,
+					public_id: fileName,
 					resource_type: "image"
 				},
 				(cloudErr, cloudRes) => {
