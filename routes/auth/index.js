@@ -63,40 +63,44 @@ router.post('/logout', (req, res) => {
 
 router.post('/signup', (req, res) => {
 	// ADD VALIDATION
-	upload(req, res, function(err) {
-		const { username, password, firstName, lastName} = req.body
-		const {path, originalname} = req.file
-		cloudinary.v2.uploader.upload(path, 
-			{
-				public_id: originalname,
-				resource_type: "image"
-			},
-			(error, cloudRes) => {
-				console.log(req.body);
-				const photo = cloudRes.url;
-				if (error) {
-				res.json(error);
-			} else {
-				User.findOne({ 'local.username': username }, (err, userMatch) => {
-				if (userMatch) {
-					return res.json({
-						error: `Sorry, already a user with the username: ${username}`
+	upload(req, res, function(upErr) {
+		if (upErr){
+			res.json(upErr);
+		} else {
+			const { username, password, firstName, lastName} = req.body
+			const {path, originalname} = req.file
+			cloudinary.v2.uploader.upload(path, 
+				{
+					public_id: originalname,
+					resource_type: "image"
+				},
+				(error, cloudRes) => {
+					console.log(req.body);
+					const photo = cloudRes.url;
+					if (error) {
+					res.json(error);
+				} else {
+					User.findOne({ 'local.username': username }, (err, userMatch) => {
+					if (userMatch) {
+						return res.json({
+							error: `Sorry, already a user with the username: ${username}`
+						})
+					}
+					const newUser = new User({
+						'local.username': username,
+						'local.password': password,
+						firstName,
+						lastName,
+						photo
+					});
+					newUser.save((dbErr, savedUser) => {
+						if (dbErr) return res.json(dbErr)
+						return res.json(savedUser)
+					})
 					})
 				}
-				const newUser = new User({
-					'local.username': username,
-					'local.password': password,
-					firstName,
-					lastName,
-					photo
-				});
-				newUser.save((err, savedUser) => {
-					if (err) return res.json(err)
-					return res.json(savedUser)
-				})
-				})
-			}
-		});
+			});
+		}
     })
 })
 
