@@ -14,6 +14,7 @@ const summer = require("./goodread_summer_1.json");
 const sweaterWthr = require("./goodread_sweaterweather_1.json");
 const thriller = require("./goodread_thriller_1.json");
 const winter = require("./goodread_winter_1.json");
+const tags = require("./tags.json");
 //const = require("./.json");
 
 const books = bestBksEvr.concat(
@@ -38,5 +39,6 @@ const lists = require("./list.json")
 
 module.exports = expPackage = {
     books: books,
-    lists: lists
+    lists: lists,
+    tags: tags
 };

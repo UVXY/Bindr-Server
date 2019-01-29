@@ -44,8 +44,7 @@ const userSchema = new Schema({
     }
   ],
   photo: {
-		type: String,
-		required: true
+		type: String
   }
 })
 

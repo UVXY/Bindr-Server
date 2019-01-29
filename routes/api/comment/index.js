@@ -8,55 +8,65 @@ const db = require('../../../db/models');
 
 cloudinary.config(process.env.CLOUDINARY_URL);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './tmp/audio_uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname)
-  }
-})
+const upload = multer({ dest: "/tmp/audio_uploads"}).single("audio-comment");
 
-const upload = multer({ storage: storage })
-
-router.post("/audio", upload.single("audio-comment"), (req, res) => {
-  cloudinary.v2.uploader.upload(
-    `./tmp/audio_uploads${req.file.filename}`, 
-    {resource_type: "video"},
-    (err, cloudRes) => {
-      if (err) {
-        res.json(err);
-      } else {
-        const audioComment = {
-          author: req.body.author,
-          content: req.body.text,
-          audio: true,
-          contentLink: cloudRes.url
-        };
-        db.Comment.create(audioComment).then(commentRes => {
-          return db.Book.findOneAndUpdate(
-            { _id: req.body.id }, 
-            { $push: {comments: commentRes._id }}, 
-            { new: true }
-          );
-        });
-      }
+router.post("/audio", (req, res) => {
+  upload(req, res, function(upErr) {
+		if (upErr){
+			res.json(upErr);
+		} else {
+      const {author, content, audio, id} = req.body;
+      const {path} = req.file
+      cloudinary.v2.uploader.upload(
+        path, 
+        {
+          use_filename: true,
+          unique_filename: false,
+          resource_type: "video"
+        },
+        (cloudErr, cloudRes) => {
+          if (cloudErr) {
+            res.json(cloudErr);
+          } else {
+            const audioComment = {
+              author: author,
+              content: content,
+              audio: audio,
+              contentLink: cloudRes.url
+            };
+            db.Comment.create(audioComment).then(commentRes => {
+              return db.Book.findOneAndUpdate(
+                { _id: id }, 
+                { $push: {comments: commentRes._id }}, 
+                { new: true }
+              );
+            });
+          }
+        })
+        .catch(function(err) {
+          res.json(err);
+      });
     }
-  ).catch(function(err) {
-		console.log(err);
   });
 });
 
-router.post("/", upload.none(), (req, res) => {
-  db.Comment.create(req.body).then((comment) => {
-		return db.Book.findOneAndUpdate(
-      { _id: req.body.id }, 
+router.post("/", (req, res) => {
+  const {author, content, audio, id} = req.body;
+  db.Comment.create({
+    author: author,
+    content: content,
+    audio: audio
+  }).then((comment) => {
+		db.Book.findOneAndUpdate(
+      { _id: id }, 
       { $push: {comments: comment._id }}, 
       { new: true }
-    );
+    ).then(dbRes => {
+      console.log(dbRes);
+      res.status(200).send("Done!");
+    });
   })
   .catch(function(err) {
-		console.log(err)
     res.json(err);
   });
 });

@@ -1,7 +1,13 @@
-const express = require("express")
-const router = express.Router()
-const User = require("../../db/models/user")
-const passport = require("../../passport")
+const express = require("express");
+const router = express.Router();
+const multer  = require('multer');
+const cloudinary = require('cloudinary');
+const User = require("../../db/models/user");
+const passport = require("../../passport");
+
+cloudinary.config(process.env.CLOUDINARY_URL);
+
+const upload = multer({dest: "/tmp/img_uploads"}).single("photo");
 
 // router.get("/google", passport.authenticate("google", { scope: ["profile"] }))
 
@@ -28,7 +34,6 @@ router.get('/user/:id', (req, res, next) => {
 router.post(
 	'/login',
 	function(req, res, next) {
-		console.log(req.body)
 		console.log('================')
 		next()
 	},
@@ -57,27 +62,46 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-	const { username, password, firstName, lastName, photo } = req.body
-	console.log("REQ.BODY: ", req.body)
 	// ADD VALIDATION
-	User.findOne({ 'local.username': username }, (err, userMatch) => {
-		if (userMatch) {
-			return res.json({
-				error: `Sorry, already a user with the username: ${username}`
-			})
+	upload(req, res, function(upErr) {
+		if (upErr){
+			res.json(upErr);
+		} else {
+			const { username, password, firstName, lastName} = req.body;
+			const {path} = req.file;
+			const fileName = req.file.originalname.split(".")[0];
+			cloudinary.v2.uploader.upload(path, 
+				{
+					resource_type: "image"
+				},
+				(cloudErr, cloudRes) => {
+					console.log(req.body);
+					const photo = cloudRes.url;
+				if (cloudErr) {
+					res.json(cloudErr);
+				} else {
+					User.findOne({ 'local.username': username }, (err, userMatch) => {
+					if (userMatch) {
+						return res.json({
+							error: `Sorry, already a user with the username: ${username}`
+						})
+					}
+					const newUser = new User({
+						'local.username': username,
+						'local.password': password,
+						firstName,
+						lastName,
+						photo
+					});
+					newUser.save((dbErr, savedUser) => {
+						if (dbErr) return res.json(dbErr)
+						return res.json(savedUser)
+					})
+					})
+				}
+			});
 		}
-		const newUser = new User({
-			'local.username': username,
-			'local.password': password,
-			firstName,
-			lastName,
-			photo
-		})
-		newUser.save((err, savedUser) => {
-			if (err) return res.json(err)
-			return res.json(savedUser)
-		})
-	})
+    })
 })
 
 module.exports = router
