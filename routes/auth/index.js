@@ -77,7 +77,6 @@ router.post('/signup', (req, res) => {
 	cloudinary.v2.uploader.upload(
     path, 
 		{
-			public_id: originalname,
 			resource_type: "image"
 		},
     (error, cloudRes) => {
