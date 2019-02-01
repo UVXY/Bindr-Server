@@ -19,8 +19,11 @@ createBooks = (books) => {
             image: books[i].image,
             infoLink: books[i].url
         };
+        if (newBook.title === "The Giver") {
+        console.log(newBook.summary)
+        }
     
-        db.Book.create(newBook);
+        //db.Book.create(newBook);
     };
 }
 createTags = (tags) => {
@@ -79,15 +82,15 @@ addToList = (book) => {
 
 // createTags(seed.tags);
 
-// createBooks(seed.books);
+createBooks(seed.books);
 
-for (let i = 0; i < seed.lists.length; i++) {
-    addLists(seed.lists[i]);
-}
+// for (let i = 0; i < seed.lists.length; i++) {
+//     addLists(seed.lists[i]);
+// }
 
-for (let i = 0; i < seed.books.length; i++) {
-    addToList(seed.books[i]);
-}
+// for (let i = 0; i < seed.books.length; i++) {
+//     addToList(seed.books[i]);
+// }
 
 // seed.books.forEach(nBook => {
 //     addToListOrCreate(nBook);

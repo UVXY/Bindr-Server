@@ -26,6 +26,7 @@ router.get("/", (req,res) => {
     ])
     .then((userRes) => {
         const userInfo = {
+            id: userRes._id,
             firstName: userRes.firstName,	
             lastName: userRes.lastName,	
             savedBooks: userRes.saved,	
@@ -41,7 +42,7 @@ router.get("/", (req,res) => {
 
 // Add books to user's saved book list
 router.post('/saved/:bookId', (req, res) => {
-    db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { saved: req.params.bookId } }, { new: true })
+    db.User.findOneAndUpdate({ _id: req._id }, { $push: { saved: req.params.bookId } }, { new: true })
       .catch(function (err) {
         res.json(err);
       });
