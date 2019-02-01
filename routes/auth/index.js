@@ -72,7 +72,6 @@ router.post('/signup', (req, res) => {
 			const fileName = req.file.originalname.split(".")[0];
 			cloudinary.v2.uploader.upload(path, 
 				{
-					public_id: fileName,
 					resource_type: "image"
 				},
 				(cloudErr, cloudRes) => {
