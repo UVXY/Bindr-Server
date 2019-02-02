@@ -46,7 +46,7 @@ router.get("/:tag", (req, res) => {
 });
 
 router.get("/filtered/:tag", (req, res) => {
-  const {_id} = req.body;
+const {_id} = req.body;~
   db.User.findOne({firstName: _id}).then(user => {
     const {saved, ignored} = user;
     let bookFilter  = []
@@ -69,15 +69,15 @@ router.get("/filtered/:tag", (req, res) => {
         let filteredList = []
         bookLists.forEach(list => {
           let temp = list.filter(book => !bookFilter.includes(book._id.toHexString()));
-          filteredList = filteredList.concat(temp);
+          filteredList.push(temp);
         })
         return filteredList;
       })
-      .then(bookLists => {
+      .then(filteredList => {
         let finalRes = [];
-        bookLists.forEach(list => {
+        filteredList.forEach(list => {
           const tempBkList = []
-          while (tempBkList.length < 30/bookLists.length) {
+          while (tempBkList.length < 30/filteredList.length) {
             const rn = Math.floor(Math.random() * Math.floor(list.length));
             const test = Math.floor(Math.random() * Math.floor(list.length));
             if (rn <= test) {
