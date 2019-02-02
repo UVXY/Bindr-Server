@@ -81,14 +81,23 @@ addToList = (book) => {
 
 // createBooks(seed.books);
 
-for (let i = 0; i < seed.lists.length; i++) {
-    addLists(seed.lists[i]);
-}
+// for (let i = 0; i < seed.lists.length; i++) {
+//     addLists(seed.lists[i]);
+// }
 
-for (let i = 0; i < seed.books.length; i++) {
-    addToList(seed.books[i]);
-}
+// for (let i = 0; i < seed.books.length; i++) {
+//     addToList(seed.books[i]);
+// }
 
 // seed.books.forEach(nBook => {
 //     addToListOrCreate(nBook);
 // });
+
+db.Book.findOne({title: "The Giver"}).then(res => {
+    console.log(res);
+    if (res.summary.length === 0) {
+        res.summary.push("No summary available");
+    }
+    console.log(res.summary);
+    console.log(res.summary.join(", "));
+})
