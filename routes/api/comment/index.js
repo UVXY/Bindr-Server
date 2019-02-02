@@ -53,6 +53,7 @@ router.post("/audio", (req, res) => {
 router.post("/", (req, res) => {
   console.log(req.user);
   const {content, audio, id} = req.body;
+  console.log(content, audio, id);
   // db.Comment.create({
   //   author: author,
   //   content: content,
