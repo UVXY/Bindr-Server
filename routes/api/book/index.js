@@ -3,11 +3,11 @@ const router = express.Router();
 const db = require('../../../db/models');
 
 router.get('/recommendations', function (req, res) {
-  db.Book.find({}, function (err, docs) {
-    if (!err) {
-      res.json(docs);
-    } else { throw err; }
-  });
+	db.Book.find({})
+	.populate("comments")
+	.then(dbRes => {
+		res.json(dbRes);
+	});
 });
 
 router.post('/ignore', (req, res) => {
