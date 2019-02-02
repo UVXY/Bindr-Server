@@ -51,7 +51,8 @@ router.post("/audio", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const {author, content, audio, id} = req.body;
+  const author = req.user.local.username
+  const {content, audio, id} = req.body;
   db.Comment.create({
     author: author,
     content: content,
