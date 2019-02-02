@@ -51,24 +51,25 @@ router.post("/audio", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const {author, content, audio, id} = req.body;
-  db.Comment.create({
-    author: author,
-    content: content,
-    audio: audio
-  }).then((comment) => {
-		db.Book.findOneAndUpdate(
-      { _id: id }, 
-      { $push: {comments: comment._id }}, 
-      { new: true }
-    ).then(dbRes => {
-      console.log(dbRes);
-      res.status(200).send("Done!");
-    });
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+  console.log(req.user);
+  const {content, audio, id} = req.body;
+  // db.Comment.create({
+  //   author: author,
+  //   content: content,
+  //   audio: audio
+  // }).then((comment) => {
+	// 	db.Book.findOneAndUpdate(
+  //     { _id: id }, 
+  //     { $push: {comments: comment._id }}, 
+  //     { new: true }
+  //   ).then(dbRes => {
+  //     console.log(dbRes);
+  //     res.status(200).send("Done!");
+  //   });
+  // })
+  // .catch(function(err) {
+  //   res.json(err);
+  // });
 });
 
 module.exports = router;
