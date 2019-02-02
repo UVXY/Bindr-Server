@@ -10,18 +10,6 @@ router.get('/recommendations', function (req, res) {
 	});
 });
 
-router.post('/ignore', (req, res) => {
-	db.Book.findOne({ _id: req.body.bookID}).then((book) => {
-		return db.User.findOneAndUpdate(
-			{ _id: req.user._id}, 
-			{ $push: {ignored: book._id}}, 
-			{ new: true });
-	})
-	.catch(function(err) {
-    res.json(err);
-  });
-})
-
 router.get("/", function(req, res) {
 	const id = req.body.id;
 	db.Book.find({ _id: id })
