@@ -21,7 +21,10 @@ router.get("/find/:uid", (req, res) => {
 router.get("/", (req,res) => {
     db.User.findOne({_id: req.user._id})
     .populate([
-        {path: 'saved'}, 
+        {
+            path: 'saved',
+            populate: {path: 'comments'}
+        }, 
         {path: 'ignored'}
     ])
     .then((userRes) => {
