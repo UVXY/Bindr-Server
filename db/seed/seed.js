@@ -95,3 +95,12 @@ createBooks(seed.books);
 // seed.books.forEach(nBook => {
 //     addToListOrCreate(nBook);
 // });
+
+db.Book.findOne({title: "The Giver"}).then(res => {
+    console.log(res);
+    if (res.summary.length === 0) {
+        res.summary.push("No summary available");
+    }
+    console.log(res.summary);
+    console.log(res.summary.join(", "));
+})
