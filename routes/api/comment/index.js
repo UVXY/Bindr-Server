@@ -21,8 +21,6 @@ router.post("/audio", (req, res) => {
       cloudinary.v2.uploader.upload(
         path, 
         {
-          use_filename: true,
-          unique_filename: false,
           resource_type: "video"
         },
         (cloudErr, cloudRes) => {
