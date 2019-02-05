@@ -46,8 +46,8 @@ router.get("/:tag", (req, res) => {
 });
 
 router.get("/filtered/:tag", (req, res) => {
-const {_id} = req.body;~
-  db.User.findOne({firstName: _id}).then(user => {
+const {_id} = req.user;
+  db.User.findOne({_id: _id}).then(user => {
     const {saved, ignored} = user;
     let bookFilter  = []
     saved.forEach(savedBk => {
