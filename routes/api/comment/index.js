@@ -17,7 +17,7 @@ router.post("/audio", (req, res) => {
 		} else {
       const author = req.user.local.username
       const { content, audio, id} = req.body;
-      console.log(req.body);
+      console.log(req.file);
       const {path} = req.file
       cloudinary.v2.uploader.upload(
         path, 
