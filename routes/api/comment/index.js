@@ -11,6 +11,7 @@ cloudinary.config(process.env.CLOUDINARY_URL);
 const upload = multer({ dest: "/tmp/audio_uploads"}).single("audio-comment");
 
 router.post("/audio", (req, res) => {
+  console.log(req);
   upload(req, res, function(upErr) {
 		if (upErr){
 			res.json(upErr);
