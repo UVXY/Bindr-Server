@@ -17,7 +17,6 @@ router.post("/audio", (req, res) => {
 		} else {
       const author = req.user.local.username
       const { content, audio, id} = req.body;
-      console.log(req.file);
       const {path} = req.file
       cloudinary.v2.uploader.upload(
         path, 
@@ -30,7 +29,6 @@ router.post("/audio", (req, res) => {
           if (cloudErr) {
             res.json(cloudErr);
           } else {
-            console.log()
             const audioComment = {
               author: author,
               content: content,
@@ -38,11 +36,15 @@ router.post("/audio", (req, res) => {
               contentLink: cloudRes.url
             };
             db.Comment.create(audioComment).then(commentRes => {
-              return db.Book.findOneAndUpdate(
+              db.Book.findOneAndUpdate(
                 { _id: id }, 
                 { $push: {comments: commentRes._id }}, 
                 { new: true }
-              );
+              ).then(
+                () => {
+                  res.status(200).send("Done!");
+                });
+
             });
           }
         })
