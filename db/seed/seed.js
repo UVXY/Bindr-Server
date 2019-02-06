@@ -82,7 +82,7 @@ addToList = (book) => {
 
 // createTags(seed.tags);
 
-createBooks(seed.books);
+//createBooks(seed.books);
 
 // for (let i = 0; i < seed.lists.length; i++) {
 //     addLists(seed.lists[i]);
@@ -93,14 +93,11 @@ createBooks(seed.books);
 // }
 
 // seed.books.forEach(nBook => {
-//     addToListOrCreate(nBook);
+//     addToList(nBook);
 // });
 
-db.Book.findOne({title: "The Giver"}).then(res => {
-    console.log(res);
-    if (res.summary.length === 0) {
-        res.summary.push("No summary available");
-    }
-    console.log(res.summary);
-    console.log(res.summary.join(", "));
-})
+seed.sepLists.forEach(list => {
+    const name = list[0].list;
+    const length = list.length;
+    console.log(`List ${name} is ${length} books long`);
+});

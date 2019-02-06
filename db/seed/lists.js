@@ -35,10 +35,31 @@ const books = bestBksEvr.concat(
     winter
 );
 
+const totalLists = [];
+ totalLists.push(
+    bestBksEvr,
+    backpacking, 
+    cry, 
+    devops, 
+    fall, 
+    funniest, 
+    history, 
+    rainyday, 
+    reese, 
+    scifi, 
+    selfhelp, 
+    sports, 
+    summer, 
+    sweaterWthr, 
+    thriller, 
+    winter
+);
+
 const lists = require("./list.json")
 
 module.exports = expPackage = {
     books: books,
     lists: lists,
-    tags: tags
+    tags: tags,
+    sepLists: totalLists
 };

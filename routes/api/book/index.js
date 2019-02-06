@@ -10,8 +10,8 @@ router.get('/recommendations', function (req, res) {
 	});
 });
 
-router.get("/", function(req, res) {
-	const id = req.body.id;
+router.get("/:id", function(req, res) {
+	const { id } = req.params;
 	db.Book.find({ _id: id })
 	.populate("comments")
 	.then(function(dbBook) {
