@@ -4,11 +4,14 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const multer = require("multer")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const dbConnection = require('./db') // loads our connection to the mongo database
+const routes = require("./routes");
 const passport = require('./passport')
 const app = express()
+
 const PORT = process.env.PORT || 3001
 
 // ===== Middleware ====
@@ -61,13 +64,14 @@ app.get(
 )
 
 /* Express app ROUTING */
-app.use('/auth', require('./routes/auth'))
-app.use('/api', require('./routes/book'))
-
+//app.use(multer({ dest: "/tmp/img_uploads"}).single("photo"));
+//app.use(multer({ dest: "/tmp/audio_uploads"}).single("audio-comment"));
+app.use(routes);
 
 // ====== Error handler ====
 app.use(function(err, req, res, next) {
 	console.log('====== ERROR =======')
+	console.log(err);
 	console.error(err.stack)
 	res.status(500)
 })

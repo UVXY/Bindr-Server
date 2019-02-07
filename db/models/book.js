@@ -7,23 +7,37 @@ const bookSchema = new Schema({
     required: true 
   },
   subtitle: { 
-    type: String },
+    type: String 
+  },
   authors: { 
-    type: [String], 
-    required: true 
+    type: [String]
+  },
+  genre: { 
+    type: [String]
+  },
+  isbn: {
+    type: String
+  },
+  pages: {
+    type: String
+  },
+  language: {
+    type: String
   },
   summary: { 
-    type: String, 
-    required: true 
+    type: [String]
   },
   image: { 
-    type: String, 
-    required: true 
+    type: String
+  },
+  infoLink: {
+    type: String,
+    required: true
   },
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Comments"
+      ref: "Comment"
     }
   ],
   lists: [

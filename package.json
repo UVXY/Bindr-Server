@@ -1,14 +1,13 @@
 {
-	"name": "playground",
+	"name": "bindr_server",
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
 	"scripts": {
 		"start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-		"start:prod": "node.js server.js",
+		"start:prod": "node server.js",
 		"start:dev": "nodemon server.js",
-		"prod": "export NODE_ENV=\"production\" && nodemon server.js",
-		"seed": "node scripts/seedDB.js"
+		"prod": "export NODE_ENV=\"production\" && nodemon server.js"
 	},
 	"author": "",
 	"license": "ISC",
@@ -20,6 +19,7 @@
 		"axios": "^0.18.0",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
+		"cloudinary": "^1.13.2",
 		"connect-mongo": "^2.0.3",
 		"dotenv": "^6.2.0",
 		"express": "^4.16.4",
